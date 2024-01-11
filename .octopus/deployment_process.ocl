@@ -1,17 +1,23 @@
 step "run-a-script" {
     name = "Run a Script"
     properties = {
-        Octopus.Action.TargetRoles = "offline"
+        Octopus.Action.TargetRoles = "target"
     }
 
     action {
         action_type = "Octopus.Script"
         properties = {
             Octopus.Action.RunOnServer = "false"
-            Octopus.Action.Script.ScriptBody = "write-host 'hi'"
-            Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "PowerShell"
+            Octopus.Action.Script.ScriptFileName = "name.ps"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
         }
         worker_pool_variable = ""
+
+        git_dependencies {
+            default_branch = "main"
+            git_credential_id = "GitCredentials-421"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/Kolob2206/scripts.git"
+        }
     }
 }
